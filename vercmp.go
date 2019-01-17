@@ -10,17 +10,20 @@ import (
 )
 
 func sortMakeVersionTags(tags []TagReply) []*semver.Version {
-	vs := make([]*semver.Version, len(tags))
+	var vs []*semver.Version
 
-	for i, r := range tags {
+	for _, r := range tags {
 		v := strings.Replace(r.Name, "v", "", 1)
 
 		ver, err := semver.NewVersion(v)
 		if err != nil {
-			errors.Wrapf(err, "error parsing version: %s", v)
+			err = errors.Wrapf(err, "WARNING: error parsing version: %s", v)
+			log.Println(err)
+			continue
 		}
 
-		vs[i] = ver
+		// vs[i] = ver
+		vs = append(vs, ver)
 	}
 
 	sort.Sort(sort.Reverse(semver.Collection(vs)))
