@@ -41,6 +41,7 @@ func (list *Versions) AddReplace(ver Version) {
 
 	if idx == -1 {
 		*list = append(*list, ver)
+		return
 	}
 
 	(*list)[idx] = ver
