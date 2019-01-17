@@ -74,7 +74,7 @@ func (g *GithubProvider) Fetch(repoName string) (repo Repository) {
 		}
 
 		if len(reply) >= 1 {
-		tags := sortMakeVersionTags(reply)
+			tags := sortMakeVersionTags(reply)
 			c <- tags[0].Original()
 		} else {
 			c <- "None"
@@ -103,6 +103,7 @@ func (g *GithubProvider) Fetch(repoName string) (repo Repository) {
 		log.Fatal(errors.Wrap(err, "failed to parse response"))
 	}
 
+	log.Printf("LOG: checking %s \n", reply.Name)
 	c <- reply.TagURL
 
 	// set repo details
