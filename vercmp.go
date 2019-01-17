@@ -32,9 +32,13 @@ func sortMakeVersionTags(tags []TagReply) []*semver.Version {
 }
 
 func IsNewer(recent, current Version) bool {
+	if recent.Version == "" || current.Version == "" {
+		return false
+	}
+
 	recentVer, err := semver.NewVersion(recent.Version)
 	if err != nil {
-		err = errors.Wrapf(err, "failed to parse recent version: %s", recent.Version)
+		err = errors.Wrapf(err, "failed to parse (%s) recent version: %s", recent.Name, recent.Version)
 		log.Println(err)
 
 		return false
@@ -43,7 +47,7 @@ func IsNewer(recent, current Version) bool {
 	currentVer, err := semver.NewVersion(current.Version)
 	if err != nil {
 		if current.Version != "" {
-			err = errors.Wrapf(err, "failed to parse current version: %s", current.Version)
+			err = errors.Wrapf(err, "failed to parse (%s) current version: %s", current.Name, current.Version)
 			log.Println(err)
 		}
 

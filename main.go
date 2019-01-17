@@ -13,9 +13,11 @@ var (
 
 func changeNotify(updated []*Version) {
 	for _, version := range updated {
+		if version.IsNotEmpty() {
 		vers.AddReplace(*version)
 		notify(version)
 	}
+}
 }
 
 func check() (updated []*Version) {

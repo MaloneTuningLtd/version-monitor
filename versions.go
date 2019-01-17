@@ -19,6 +19,14 @@ type Version struct {
 
 type Versions []Version
 
+func (v Version) IsNotEmpty() bool {
+	if v.Version == "" {
+		return false
+	}
+
+	return true
+}
+
 func (list Versions) Get(repoName string) (*Version, error) {
 	for _, version := range list {
 		if strings.Contains(version.Name, repoName) {

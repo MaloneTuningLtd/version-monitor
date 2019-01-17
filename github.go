@@ -73,9 +73,8 @@ func (g *GithubProvider) Fetch(repoName string) (repo Repository) {
 			log.Fatal(errors.Wrap(err, "failed to parse tags"))
 		}
 
+		if len(reply) >= 1 {
 		tags := sortMakeVersionTags(reply)
-
-		if len(tags) >= 1 {
 			c <- tags[0].Original()
 		} else {
 			c <- "None"
