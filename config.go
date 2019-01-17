@@ -88,7 +88,7 @@ func loadConfig(c *Config) {
 		field := cs.FieldByName(k)
 
 		secret, ok := secrets[v]
-		if !ok || secret != "" {
+		if !ok || secret == "" {
 			secret = os.Getenv(v)
 		}
 
