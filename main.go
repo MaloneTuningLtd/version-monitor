@@ -14,10 +14,10 @@ var (
 func changeNotify(updated []*Version) {
 	for _, version := range updated {
 		if version.IsNotEmpty() {
-		vers.AddReplace(*version)
-		notify(version)
+			vers.AddReplace(*version)
+			notify(version)
+		}
 	}
-}
 }
 
 func check() (updated []*Version) {
@@ -26,7 +26,11 @@ func check() (updated []*Version) {
 
 	process := func(name string) {
 		repo := github.Fetch(name)
-		currentVersion, err := vers.Get(name)
+
+		// in case, the repo name was changed
+		// use the recently fetched name instead
+		fullName := repo.Version.Name
+		currentVersion, err := vers.Get(fullName)
 
 		if err != nil {
 			log.Println(err.Error())
