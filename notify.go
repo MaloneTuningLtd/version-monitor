@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/pkg/errors"
 )
 
 type SlackMessage struct {
@@ -52,9 +54,13 @@ func slackMessage(recent *Version) {
 		return
 	}
 
-	http.Post(config.SlackHook, "application/json", buf)
+	if _, err := http.Post(config.SlackHook, "application/json", buf); err != nil {
+		err = errors.Wrap(err, "failed to send to slack webhook")
+		log.Println(err)
+	}
 }
 
 func notify(ver *Version) {
 	fmt.Printf("REPOSITORY: %s updated to %s\n", ver.Name, ver.Version)
+	slackMessage(ver)
 }
